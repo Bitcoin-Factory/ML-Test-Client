@@ -134,7 +134,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
             function onError(err) {
                 console.log('[ERROR] Error Building Model. Error received from Docker Compose: ' + JSON.stringify(err))
-                reject()
+                reject('Error Building Model.')
             }
 
             function onFinished(processCallResult) {
@@ -145,7 +145,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                         console.log('[ERROR] Check at a console if you can run this command: ')
                         console.log('[ERROR] docker-compose exec bitcoin-factory-machine-learning python /tf/notebooks/Bitcoin_Factory_LSTM.py')
                         console.log('[ERROR] Once you can sucessfully run it at the console you might want to try to run this App again. ')
-                        reject()
+                        reject('Unexpected Error.')
                         return
                     }
                     
