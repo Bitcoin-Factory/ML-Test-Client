@@ -138,7 +138,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
             function onFinished(processCallResult) {
                 try {
-                    console.log('Exit Code: ' + processCallResult.exitCode)
+                    //console.log('Exit Code: ' + processCallResult.exitCode)
                     // console.log('Output:' + processCallResult.out)
                     /*
                     Removing Carriedge Return from string.
