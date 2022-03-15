@@ -14,6 +14,8 @@ It allows us to define for each parameter a range of valid values, creating a se
 
 Over time, we will learn how to trim those ranges so that finally we need to search for the best performing models at a narrower space. At a production environment we will be forever testing since datasets are changing over time. 
 
+It is important to understand that this APP does not prepare the dataset to be tested. This is done by the Test Server App. That means that this app does not need to be ran together with Superalgos or any other data provider. It only depends on the Test Server which handles the management of the Test Cases and the generation of the datasets to be used at each one of the tests.
+
 ### Example of Parameters
 
 * PARAMETER   VALUE
