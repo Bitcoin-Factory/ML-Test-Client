@@ -1,0 +1,10 @@
+services:
+    superalgos-machine-learning:
+        build:
+            context: ./DockerBuild
+        image: superalgos-machine-learning
+        container_name: superalgos-ml-container      
+        ports:
+        - "8888:8888"
+        volumes:
+        - "C:/Superalgos-ML/notebooks:/tf/notebooks"
