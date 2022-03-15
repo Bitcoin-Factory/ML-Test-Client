@@ -30,23 +30,37 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
     async function run() {
         while (true) {
-            let nextTestCase = await getNextTestCase()
+            await getNextTestCase()
+                .then(onSuccess)
+                .catch(onError)
+            async function onSuccess(nextTestCase) {
+                if (nextTestCase !== undefined) {
+                    fs.writeFileSync("./notebooks/parameters.CSV", nextTestCase.files.parameters)
+                    fs.writeFileSync("./notebooks/time-series.CSV", nextTestCase.files.timeSeries)
 
-            if (nextTestCase !== undefined) {
-                fs.writeFileSync("./notebooks/parameters.CSV", nextTestCase.files.parameters)
-                fs.writeFileSync("./notebooks/time-series.CSV", nextTestCase.files.timeSeries)
+                    let testResult = await buildModel(nextTestCase)
 
-                let testResult = await buildModel(nextTestCase)
-
-                if (testResult !== undefined) {
-                    testResult.id = nextTestCase.id
-                    let reward = await setTestCaseResults(testResult)
-                    console.log(reward)
+                    if (testResult !== undefined) {
+                        testResult.id = nextTestCase.id
+                        await setTestCaseResults(testResult)
+                            .then(onSuccess)
+                            .catch(onError)
+                        async function onSuccess(reward) {
+                            console.log(reward)
+                        }
+                        async function onError(err) {
+                            console.log((new Date()).toISOString(), 'Failed to send a Report to the Test Server with the Test Case Results and get a Reward for that. Err:', err)
+                        }
+                    }
+                } else {
+                    console.log((new Date()).toISOString(), 'Nothing to Test')
                 }
-            } else {
-                console.log('Nothing to Test at: ', (new Date()).toISOString())
+                await sleep(10000)
             }
-            await sleep(10000)
+            async function onError(err) {
+                console.log((new Date()).toISOString(), 'Failed to get a Test Case. Err:', err)
+                await sleep(10000)
+            }
         }
     }
 
@@ -63,14 +77,21 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
             let message = {
                 type: 'Get Next Test Case'
             }
-            let response = await WEBRTC.sendMessage(JSON.stringify(message))
-            if (response !== 'NO TEST CASES AVAILABLE AT THE MOMENT') {
-                let nextTestCase = JSON.parse(response[2])
-                nextTestCase.files.timeSeries = response[0]
-                nextTestCase.files.parameters = response[1]
-                resolve(nextTestCase)
-            } else {
-                console.log('Nothing to Test at: ', (new Date()).toISOString())
+            await WEBRTC.sendMessage(JSON.stringify(message))
+                .then(onSuccess)
+                .catch(onError)
+            async function onSuccess(response) {
+                if (response !== 'NO TEST CASES AVAILABLE AT THE MOMENT') {
+                    let nextTestCase = JSON.parse(response[2])
+                    nextTestCase.files.timeSeries = response[0]
+                    nextTestCase.files.parameters = response[1]
+                    resolve(nextTestCase)
+                } else {
+                    reject('No more test cases at the Test Server')
+                }
+            }
+            async function onError(err) {
+                reject(err)
             }
         }
     }
@@ -83,8 +104,15 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                 type: 'Set Test Case Results',
                 payload: JSON.stringify(testResult)
             }
-            let response = await WEBRTC.sendMessage(JSON.stringify(message))
-            resolve(response)
+            await WEBRTC.sendMessage(JSON.stringify(message))
+                .then(onSuccess)
+                .catch(onError)
+            async function onSuccess(response) {
+                resolve(response)
+            }
+            async function onError(err) {
+                reject(err)
+            }
         }
     }
 
