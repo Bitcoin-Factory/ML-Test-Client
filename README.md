@@ -8,7 +8,7 @@ When working with Machine Learning models, soon you realize that even though the
 
 Nobody knows what combination is going to produce the best results. For this kind of problems, the results are measured by the error measured of the predictions that a trained model can proviede, compared with the actual values. In order to obtain the error measure, first a ML model with certain parameters and certain data need to be created and trained, which usually takes time. 
 
-Testing combinations of parameters and data (with potentially hundreds of indicators to choose from, thousands of crypto assets, and dozens of time-frames) by hand, would be a nightmare. This system solves that problems bu automating the discovery of the best performing ML models, for a certain range of parameters values and certain set of indicators. 
+Testing combinations of parameters and data (with potentially hundreds of indicators to choose from, thousands of crypto assets, and dozens of time-frames) by hand, would be a nightmare. This system solves that problems by automating the discovery of the best performing ML models, for a certain range of parameters values and certain set of indicators. 
 
 It allows us to define for each parameter a range of valid values, creating a set of Test Cases based on all the possible combinations of all the values inside the valid  ranges for all parameters. Then we only need distributed processing power to test all the combinations in a reasonable time and find which parameters / data configurations produces the best results. Best results means the best predictions in crypto markets.
 
