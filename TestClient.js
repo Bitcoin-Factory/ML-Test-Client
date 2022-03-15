@@ -49,16 +49,16 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                             console.log(reward)
                         }
                         async function onError(err) {
-                            console.log((new Date()).toISOString(), 'Failed to send a Report to the Test Server with the Test Case Results and get a Reward for that. Err:', err)
+                            console.log((new Date()).toISOString(), 'Failed to send a Report to the Test Server with the Test Case Results and get a Reward for that. Err:', err, 'Retrying in 10 seconds...')
                         }
                     }
                 } else {
-                    console.log((new Date()).toISOString(), 'Nothing to Test')
+                    console.log((new Date()).toISOString(), 'Nothing to Test', 'Retrying in 10 seconds...')
                 }
                 await sleep(10000)
             }
             async function onError(err) {
-                console.log((new Date()).toISOString(), 'Failed to get a Test Case. Err:', err)
+                console.log((new Date()).toISOString(), 'Failed to get a Test Case. Err:', err, 'Retrying in 10 seconds...')
                 await sleep(10000)
             }
         }
