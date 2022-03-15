@@ -1,6 +1,14 @@
 # ML-Test-Client
 ML-Test-Client
 
+## Pre-Requisites
+
+* nodejs
+* npm
+* git
+* docker
+* docker-compose
+
 ## Setup
 
 First, clone the needed repositories.
@@ -12,6 +20,7 @@ git clone http://github.com/Bitcoin-Factory/ML-Test-Client
 cd ML-Test-Client
 git clone http://github.com/Bitcoin-Factory/ML-Test-WebRTC
 cd ..
+npm install node-pre-gyp
 npm update
 ```
 
