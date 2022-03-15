@@ -7,4 +7,4 @@ services:
         ports:
         - "8888:8888"
         volumes:
-        - "C:/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks"
+        - "./notebooks:/tf/notebooks"
