@@ -15,7 +15,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         predictions: undefined,
         parameters: undefined
     }
-    const WEBRTC_MODULE = require('./WebRTC')
+    const WEBRTC_MODULE = require('./ML-Test-WebRTC/WebRTC')
     const WEBRTC = WEBRTC_MODULE.newMachineLearningWebRTC()
 
     return thisObject
@@ -100,7 +100,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         return new Promise(promiseWork)
 
         async function promiseWork(resolve, reject) {
-            await compose.exec('superalgos-machine-learning', 'python /tf/notebooks/Superalgos_LSTM.py')
+            await compose.exec('bitcoin-factory-machine-learning', 'python /tf/notebooks/Bitcoin_Factory_LSTM.py')
                 .catch(onError)
                 .then(onFinished)
 

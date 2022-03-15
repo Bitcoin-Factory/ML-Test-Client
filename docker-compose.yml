@@ -1,10 +1,10 @@
 services:
-    superalgos-machine-learning:
+    bitcoin-factory-machine-learning:
         build:
             context: ./DockerBuild
-        image: superalgos-machine-learning
-        container_name: superalgos-ml-container      
+        image: bitcoin-factory-machine-learning
+        container_name: bitcoin-factory-ml-container      
         ports:
         - "8888:8888"
         volumes:
-        - "C:/Superalgos-ML/notebooks:/tf/notebooks"
+        - "C:/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks"
