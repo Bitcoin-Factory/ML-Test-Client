@@ -138,6 +138,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
             function onFinished(processCallResult) {
                 try {
+                    console.log('onFinished', processCallResult)
                     //console.log('Exit Code: ' + processCallResult.exitCode)
                     // console.log('Output:' + processCallResult.out)
                     /*
