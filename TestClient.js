@@ -143,6 +143,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                         console.log('[ERROR] Unexpected error trying to execute a Python script inside the Docker container. ')
                         console.log('[ERROR] Check at a console if you can run this command: ')
                         console.log('[ERROR] docker-compose exec bitcoin-factory-machine-learning python /tf/notebooks/Bitcoin_Factory_LSTM.py')
+                        console.log('[ERROR] Once you can sucessfully run it at the console you might want to try to run this App again. ')
                         return
                     }
                     
