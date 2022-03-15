@@ -1,6 +1,6 @@
-FROM tensorflow/tensorflow:latest-jupyter
+FROM tensorflow/tensorflow:latest
 
 RUN pip install -U scikit-learn
 RUN pip install pandas
-
-# CMD [ "python", "/tf/notebooks/Bitcoin_Factory_LSTM.py" ]
+RUN pip install notebook
+RUN pip install matplotlib
