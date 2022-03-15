@@ -4,11 +4,11 @@
 
 ### Why do we need this?
 
-When working with Machine Learning models, soon you realize that even though the could work, you need to set a whole array of parameters that not only define the architecture of the model, but also the shape of the data and may other things. For each of these parameters, there are valid ranges which might work, but only in combination with other parameters which also have their own valid ranges.
+When working with Machine Learning models, soon you realize that even though they could work to make financial predictions, you need to set a whole array of parameters that not only define the architecture of the model, but also the shape of the data and may other things. For each of these parameters, there is a valid range of values that could work, but only in combination with other parameters which also have their own valid ranges.
 
-Nobody knows what is going to produce the best results. For this problem the results are measured by the error measured of the predictions that a trained model can proviede. In order to obtein the error measure, first a ML model with certain parameters need to be created and trained, which usually takes time. 
+Nobody knows what combination is going to produce the best results. For this kind of problems, the results are measured by the error measured of the predictions that a trained model can proviede. In order to obtein the error measure, first a ML model with certain parameters and certain data need to be created and trained, which usually takes time. 
 
-Testing combinations of parameters and data (with potentially hundreds of indicators to choose from, bethween potentially thousends of crypto assets, and dozens of time-frames) by hand, would be a nightmare. This system solves that problems. It allows us to define at ranges for each parameter creating a set of Test Cases based on all the possible combinations of all the values at all the ranges of all parameters. Then you only need distributed processing power to test them all in a reasonable time and find which parameters / data configurations produces the best results.
+Testing combinations of parameters and data (with potentially hundreds of indicators to choose from, thousands of crypto assets, and dozens of time-frames) by hand, would be a nightmare. This system solves that problems. It allows us to define at ranges for each parameter creating a set of Test Cases based on all the possible combinations of all the values at all the ranges of all parameters. Then you only need distributed processing power to test them all in a reasonable time and find which parameters / data configurations produces the best results.
 
 Over time, we will learn how to trim those ranges so that finally we need to search for the best performing models at a narrower space.  
 
