@@ -1,7 +1,4 @@
 {
-  "devDependencies": {
-    "docker-compose": "^0.23.17"
-  },
   "dependencies": {
     "wrtc": "^0.4.7",
     "ws": "^8.5.0"

@@ -128,36 +128,51 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         return new Promise(promiseWork)
 
         async function promiseWork(resolve, reject) {
-            await compose.exec('bitcoin-factory-machine-learning', 'python /tf/notebooks/Bitcoin_Factory_LSTM.py')
-                .catch(onError)
-                .then(onFinished)
+            //await compose.exec('bitcoin-factory-machine-learning', 'python /tf/notebooks/Bitcoin_Factory_LSTM.py')
+            //  .catch(onError)
+            //.then(onFinished)
+
+            const { spawn } = require('child_process');
+            const ls = spawn('docker', ['exec', 'Bitcoin-Factory-ML', 'python', '/tf/notebooks/Bitcoin_Factory_LSTM.py']);
+            let dataReceived = ''
+            ls.stdout.on('data', (data) => {
+                data = data.toString()
+                /*
+                Removing Carriedge Return from string.
+                */
+                for (let i = 0; i < 1000; i++) {
+                    data = data.replace(/\n/, "")
+                }
+                dataReceived = dataReceived + data.toString()
+            });
+
+            ls.stderr.on('data', (data) => {
+                onError(data)
+            });
+
+            ls.on('close', (code) => {
+                console.log(`Docker Python Script exited with code ${code}`);
+                if (code === 0) {
+                    onFinished(dataReceived)
+                } else {
+                    console.log('[ERROR] Unexpected error trying to execute a Python script inside the Docker container. ')
+                    console.log('[ERROR] Check at a console if you can run this command: ')
+                    console.log('[ERROR] docker exec -it Bitcoin-Factory-ML python /tf/notebooks/Bitcoin_Factory_LSTM.py')
+                    console.log('[ERROR] Once you can sucessfully run it at the console you might want to try to run this App again. ')
+                    reject('Unexpected Error.')
+                }
+            });
 
             function onError(err) {
-                console.log('[ERROR] Error Building Model. Error received from Docker Compose: ' + JSON.stringify(err))
-                reject('Error Building Model.')
+                err = err.toString()
+                //console.log('[ERROR] Error Building Model. Error received from Docker Compose: ' + JSON.stringify(err))
+                //reject('Error Building Model.')
             }
 
-            function onFinished(processCallResult) {
+            function onFinished(dataReceived) {
                 try {
 
-                    if (processCallResult === undefined) {
-                        console.log('[ERROR] Unexpected error trying to execute a Python script inside the Docker container. ')
-                        console.log('[ERROR] Check at a console if you can run this command: ')
-                        console.log('[ERROR] docker-compose exec bitcoin-factory-machine-learning python /tf/notebooks/Bitcoin_Factory_LSTM.py')
-                        console.log('[ERROR] Once you can sucessfully run it at the console you might want to try to run this App again. ')
-                        reject('Unexpected Error.')
-                        return
-                    }
-                    
-                    //console.log('Exit Code: ' + processCallResult.exitCode)
-                    // console.log('Output:' + processCallResult.out)
-                    /*
-                    Removing Carriedge Return from string.
-                    */
-                    for (let i = 0; i < 10000; i++) {
-                        processCallResult.out = processCallResult.out.replace(/\n/, "")
-                    }
-                    processExecutionResult = JSON.parse(processCallResult.out)
+                    processExecutionResult = JSON.parse(dataReceived)
 
                     processExecutionResult.predictions = fixJSON(processExecutionResult.predictions)
                     processExecutionResult.actualValues = fixJSON(processExecutionResult.actualValues)
@@ -202,13 +217,9 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                     console.log('')
 
                 } catch (err) {
-                    if (processCallResult !== undefined) {
-                        console.log('Output:' + processCallResult.out)
-                        if (processExecutionResult !== undefined && processExecutionResult.predictions !== undefined) {
-                            console.log('processExecutionResult.predictions:' + processExecutionResult.predictions)
-                        }
-                    } else {
-                        console.log('processCallResult:' + processCallResult)
+
+                    if (processExecutionResult !== undefined && processExecutionResult.predictions !== undefined) {
+                        console.log('processExecutionResult.predictions:' + processExecutionResult.predictions)
                     }
 
                     console.log(err.stack)
