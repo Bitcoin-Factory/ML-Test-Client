@@ -9,7 +9,6 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         finalize: finalize
     }
     const fs = require("fs")
-    const compose = require('docker-compose')
     const bestParameters = {
         errorRMSE: undefined,
         predictions: undefined,
@@ -128,9 +127,6 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         return new Promise(promiseWork)
 
         async function promiseWork(resolve, reject) {
-            //await compose.exec('bitcoin-factory-machine-learning', 'python /tf/notebooks/Bitcoin_Factory_LSTM.py')
-            //  .catch(onError)
-            //.then(onFinished)
 
             const { spawn } = require('child_process');
             const ls = spawn('docker', ['exec', 'Bitcoin-Factory-ML', 'python', '/tf/notebooks/Bitcoin_Factory_LSTM.py']);
@@ -165,7 +161,6 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
             function onError(err) {
                 err = err.toString()
-                //console.log('[ERROR] Error Building Model. Error received from Docker Compose: ' + JSON.stringify(err))
                 //reject('Error Building Model.')
             }
 
