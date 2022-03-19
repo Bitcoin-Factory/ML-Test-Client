@@ -105,7 +105,7 @@ cd ..
 First, run the Docker Container.
 
 ```sh
-docker-compose run bitcoin-factory-machine-learning
+docker run -it --rm --name Bitcoin-Factory-ML -v ./notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
 ```
 
 Second, run the App.
