@@ -19,8 +19,8 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
     return thisObject
 
-    function initialize() {
-        WEBRTC.initialize('Luis-Laptop')
+    function initialize(testClientId) {
+        WEBRTC.initialize(testClientId)
     }
 
     function finalize() {
