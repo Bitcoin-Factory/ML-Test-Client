@@ -34,8 +34,8 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                 .catch(onError)
             async function onSuccess(nextTestCase) {
                 if (nextTestCase !== undefined) {
-                    fs.writeFileSync("./notebooks/parameters.CSV", nextTestCase.files.parameters)
-                    fs.writeFileSync("./notebooks/time-series.CSV", nextTestCase.files.timeSeries)
+                    fs.writeFileSync("./notebooks/parameters.csv", nextTestCase.files.parameters)
+                    fs.writeFileSync("./notebooks/time-series.csv", nextTestCase.files.timeSeries)
 
                     let testResult = await buildModel(nextTestCase)
 

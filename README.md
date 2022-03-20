@@ -114,6 +114,13 @@ Second, run the App.
 node runTestClient
 ```
 
+## Ubuntu Server on Raspberry Pi
+
+```sh
+sudo docker run -it --rm --name Bitcoin-Factory-ML -v ~/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks -p 8888:8888 bitcoin-fac
+tory-machine-learning
+```
+
 ## Notes to Mac Users
 
 The command to run the container on Mac should be like this:
