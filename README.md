@@ -77,9 +77,15 @@ Since the Test Client and Test Server interact in a p2p way via webRTC, that mea
 * docker
 * docker-compose
 
+## Your-Test-Client-Id
+
+To run this software you need to get an Id for your Test Client. 
+
 ## Setup
 
-First, clone the needed repositories.
+### Repositories Cloning 
+
+Clone the needed repositories.
 
 ```sh
 mkdir Bitcoin-Factory
@@ -94,8 +100,18 @@ npm update
 
 Second, build the Docker Image.
 
+### On x86 Processors
+
 ```sh
 cd DockerBuild
+docker build -t bitcoin-factory-machine-learning .
+cd ..
+```
+
+### On xArm Processors
+
+```sh
+cd ArmDockerBuild
 docker build -t bitcoin-factory-machine-learning .
 cd ..
 ```
@@ -104,6 +120,7 @@ cd ..
 
 First, run the Docker Container.
 
+### on Windows
 ```sh
 docker run -it --rm --name Bitcoin-Factory-ML -v /notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
 ```
@@ -114,20 +131,18 @@ Second, run the App.
 node runTestClient
 ```
 
-## Ubuntu Server on Raspberry Pi
+### on Ubuntu Server
 
 ```sh
 sudo docker run -it --rm --name Bitcoin-Factory-ML -v ~/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks -p 8888:8888 bitcoin-fac
 tory-machine-learning
 ```
 
-## Notes to Mac Users
-
-The command to run the container on Mac should be like this:
-
 ```sh
-docker run -it --rm --name Bitcoin-Factory-ML -v /Users/Your-User-Name/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
+sudo node runTestClient Your-Test-Client-Id
 ```
+
+## on Mac OS
 
 ### File Sharing
 
@@ -140,6 +155,18 @@ At the Settings of the Docker App, use File sharing to allow local directories o
 To add the 'notebooks' Directory: Click + and navigate to the 'notebooks' directory.
 
 Apply & Restart makes the directory available to containers using Docker’s bind mount (-v) feature.
+
+### Run the Container 
+
+The command to run the container on Mac should be like this (mind Your-User-Name):
+
+```sh
+docker run -it --rm --name Bitcoin-Factory-ML -v /Users/Your-User-Name/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
+```
+
+```sh
+node runTestClient Your-Test-Client-Id
+```
 
 ## Docker Cheat Sheet
 
