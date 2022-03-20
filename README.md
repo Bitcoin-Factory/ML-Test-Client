@@ -118,20 +118,22 @@ cd ..
 
 ## Usage
 
-First, run the Docker Container.
+Run the Docker Container:
 
 ### on Windows
 ```sh
 docker run -it --rm --name Bitcoin-Factory-ML -v /notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
 ```
 
-Second, run the App.
+Run the App:
 
 ```sh
-node runTestClient
+node runTestClient Your-Test-Client-Id
 ```
 
 ### on Ubuntu Server
+
+Run the Docker Container:
 
 ```sh
 sudo docker run -it --rm --name Bitcoin-Factory-ML -v ~/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks -p 8888:8888 bitcoin-fac
@@ -150,25 +152,27 @@ Before running that command for the first time, you will need to share the noteb
 
 At the Settings of the Docker App, use File sharing to allow local directories on the Mac to be shared with Linux containers. By default the /Users, /Volume, /private, /tmp and /var/folders directory are shared. As this project is outside this directory then it must be added to the list. Otherwise you may get Mounts denied or cannot start service errors at runtime.
 
-### File Share Settings:
+### File Share Settings
 
 To add the 'notebooks' Directory: Click + and navigate to the 'notebooks' directory.
 
 Apply & Restart makes the directory available to containers using Docker’s bind mount (-v) feature.
 
-### Run the Container 
+### Run the Container & the App
 
-The command to run the container on Mac should be like this (mind Your-User-Name):
+The command to run the container on Mac should be like this (mind Your-User-Name).
 
 ```sh
 docker run -it --rm --name Bitcoin-Factory-ML -v /Users/Your-User-Name/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
 ```
 
+Run the App:
+
 ```sh
 node runTestClient Your-Test-Client-Id
 ```
 
-## Docker Cheat Sheet
+## Troubleshooting - Docker Cheat Sheet
 
 If you get the error:
 
