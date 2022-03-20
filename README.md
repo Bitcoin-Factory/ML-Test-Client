@@ -105,7 +105,7 @@ cd ..
 First, run the Docker Container.
 
 ```sh
-docker run -it --rm --name Bitcoin-Factory-ML -v ./notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
+docker run -it --rm --name Bitcoin-Factory-ML -v /notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
 ```
 
 Second, run the App.
@@ -113,3 +113,39 @@ Second, run the App.
 ```sh
 node runTestClient
 ```
+
+## Notes to Mac Users
+
+The command to run the container on Mac should be like this:
+
+```sh
+docker run -it --rm --name Bitcoin-Factory-ML -v /Users/Your-User-Name/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
+```
+
+### File Sharing
+
+Before running that command for the first time, you will need to share the notebooks folder.
+
+At the Settings of the Docker App, use File sharing to allow local directories on the Mac to be shared with Linux containers. By default the /Users, /Volume, /private, /tmp and /var/folders directory are shared. As this project is outside this directory then it must be added to the list. Otherwise you may get Mounts denied or cannot start service errors at runtime.
+
+### File Share Settings:
+
+To add the 'notebooks' Directory: Click + and navigate to the 'notebooks' directory.
+
+Apply & Restart makes the directory available to containers using Docker’s bind mount (-v) feature.
+
+## Docker Cheat Sheet
+
+If you get the error:
+
+```sh
+docker: Error response from daemon: Conflict. The container name "/Bitcoin-Factory-ML" is already in use by container ...
+```
+
+Use the command
+
+```sh
+docker container prune
+```
+
+to fix it.

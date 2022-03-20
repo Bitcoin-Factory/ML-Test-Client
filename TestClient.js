@@ -20,7 +20,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
     return thisObject
 
     function initialize() {
-        WEBRTC.initialize()
+        WEBRTC.initialize('Luis-Laptop')
     }
 
     function finalize() {
@@ -215,6 +215,12 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
                     if (processExecutionResult !== undefined && processExecutionResult.predictions !== undefined) {
                         console.log('processExecutionResult.predictions:' + processExecutionResult.predictions)
+                    }
+                    if (processExecutionResult !== undefined && processExecutionResult.actualValues !== undefined) {
+                        console.log('processExecutionResult.actualValues:' + processExecutionResult.actualValues)
+                    }
+                    if (processExecutionResult !== undefined && processExecutionResult.difference !== undefined) {
+                        console.log('processExecutionResult.difference:' + processExecutionResult.difference)
                     }
 
                     console.log(err.stack)
