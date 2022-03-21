@@ -9,11 +9,6 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         finalize: finalize
     }
     const fs = require("fs")
-    const bestParameters = {
-        errorRMSE: undefined,
-        predictions: undefined,
-        parameters: undefined
-    }
     const WEBRTC_MODULE = require('./ML-Test-WebRTC/WebRTC')
     const WEBRTC = WEBRTC_MODULE.newMachineLearningWebRTC()
 
@@ -49,8 +44,10 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                         await setTestCaseResults(testResult)
                             .then(onSuccess)
                             .catch(onError)
-                        async function onSuccess(reward) {
-                            console.log(reward)
+                        async function onSuccess(bestPredictions) {
+                            console.log(' ')
+                            console.log('Best Crowd-Sourced Predictions:')
+                            console.table(JSON.parse(bestPredictions))
                         }
                         async function onError(err) {
                             console.log((new Date()).toISOString(), 'Failed to send a Report to the Test Server with the Test Case Results and get a Reward for that. Err:', err, 'Retrying in 10 seconds...')
@@ -190,31 +187,6 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                     let endingTimestamp = (new Date()).valueOf()
                     processExecutionResult.enlapsedTime = (endingTimestamp - startingTimestamp) / 1000
                     console.log('Enlapsed Time (HH:MM:SS): ' + (new Date(processExecutionResult.enlapsedTime * 1000).toISOString().substr(14, 5)) + ' ')
-
-                    if (bestParameters.errorRMSE === undefined) {
-                        bestParameters.errorRMSE = processExecutionResult.errorRMSE
-                        bestParameters.predictions = processExecutionResult.predictions
-                        bestParameters.actualValues = processExecutionResult.actualValues
-                        bestParameters.difference = processExecutionResult.difference
-                        bestParameters.parameters = nextTestCase.parameters
-                    }
-
-                    if (processExecutionResult.errorRMSE < bestParameters.errorRMSE) {
-                        bestParameters.errorRMSE = processExecutionResult.errorRMSE
-                        bestParameters.predictions = processExecutionResult.predictions
-                        bestParameters.actualValues = processExecutionResult.actualValues
-                        bestParameters.difference = processExecutionResult.difference
-                        bestParameters.parameters = nextTestCase.parameters
-                    }
-                    console.log('')
-                    console.log('Best Error: ' + bestParameters.errorRMSE)
-                    console.log('Best Predictions: ' + bestParameters.predictions)
-                    console.log('Best Actual Values: ' + bestParameters.actualValues)
-                    console.log('Best Differences: ' + bestParameters.difference)
-                    console.log('Current Best Set of Parameters: ')
-                    console.log('')
-                    console.table(bestParameters.parameters)
-                    console.log('')
 
                 } catch (err) {
 
