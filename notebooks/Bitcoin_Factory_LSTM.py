@@ -406,7 +406,7 @@ pyplot.show()
 
 
 diff = (inv_yhat - inv_y) 
-diff = diff.astype('int')
+diff = diff.astype('float32')
 diff
 
 
