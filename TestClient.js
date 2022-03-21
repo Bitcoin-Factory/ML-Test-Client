@@ -121,9 +121,12 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         console.log('')
         console.log('-------------------------------------------------------- Test Case # ' + nextTestCase.id + ' / ' + nextTestCase.totalCases + ' --------------------------------------------------------')
         console.log('')
+        console.log('Starting at this GMT Datetime: ', (new Date()).toISOString())
+        console.log('')        
+        console.log('Parameters Received for this Test:')
         console.table(nextTestCase.parameters)
         console.log('')
-        console.log('GMT Datetime: ', (new Date()).toISOString())
+        
         let processExecutionResult
         let startingTimestamp = (new Date()).valueOf()
         return new Promise(promiseWork)
