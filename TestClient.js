@@ -242,15 +242,16 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         /*
         Removing Carriedge Return from string.
         */
-        text = text.replace(" [", "[")
-        text = text.replace(" ]", "]")
-        text = text.replace("  ]", "]")
-        text = text.replace("   ]", "]")
-        text = text.replace("    ]", "]")
-        text = text.replace("     ]", "]")
-        text = text.replace("      ]", "]")
-        text = text.replace("] ", "]")
-
+        for (let i = 0; i < 10; i++) {
+            text = text.replace(" [", "[")
+            text = text.replace(" ]", "]")
+            text = text.replace("  ]", "]")
+            text = text.replace("   ]", "]")
+            text = text.replace("    ]", "]")
+            text = text.replace("     ]", "]")
+            text = text.replace("      ]", "]")
+            text = text.replace("] ", "]")
+        }
         for (let i = 0; i < 100; i++) {
             text = text.replace("  ", ",")
         }
@@ -262,6 +263,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
             text = text.replace(",]", "]")
             text = text.replace("[,", "[")
             text = text.replace(".,", ",")
+            text = text.replace(".]", "]")
         }
         return text
     }
