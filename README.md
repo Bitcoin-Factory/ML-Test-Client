@@ -58,7 +58,7 @@ Once a Test Case is received, the Test Client app will write 2 files at the note
 * parameters.CSV
 * time-series.CSV
 
-After these files are written, the Test Client App will use the npm package called docker-compose, to execute inside the Tensor Flow container the Bitcoin_Factory_LSTM.py script. 
+After these files are written, the Test Client App will execute inside the Tensor Flow container the Bitcoin_Factory_LSTM.py script. 
 
 This script reads boths files, and creates a ML model using the provided parameters and the data at the time-series file. It's execution could take several minutes. Once finished, a set of results are sent back from the Python script to the Test Client app, which in turn sends via webRTC the results to the Test Server app. This app creates a report at Google Sheets with all the consolidated test results provided by all the Test Clients that contributed running the individual tests.
 
@@ -75,7 +75,6 @@ Since the Test Client and Test Server interact in a p2p way via webRTC, that mea
 * npm
 * git
 * docker
-* docker-compose
 
 ## Your-Test-Client-Id
 
