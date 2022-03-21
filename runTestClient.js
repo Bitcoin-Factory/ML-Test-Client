@@ -1,3 +1,4 @@
+console.clear()
 let testClientId = process.argv[2]
 if (testClientId === undefined) {
     console.log('[ERROR] You need to provide this Test Client Id as a parameter to this script.')
