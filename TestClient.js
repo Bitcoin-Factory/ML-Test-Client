@@ -16,11 +16,6 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
     function initialize(testClientId) {
         WEBRTC.initialize(testClientId)
-        setInterval(requestForecasts, 1000 * 60 * 60)
-
-        function requestForecasts() {
-            console.log((new Date()).toISOString(), 'Requesting Forecasts')
-        }
     }
 
     function finalize() {
