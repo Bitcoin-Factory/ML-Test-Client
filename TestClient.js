@@ -39,10 +39,12 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                         await setTestCaseResults(testResult)
                             .then(onSuccess)
                             .catch(onError)
-                        async function onSuccess(bestPredictions) {
+                        async function onSuccess(response) {
+                            let bestPredictions = JSON.parse(response)
                             console.log(' ')
                             console.log('Best Crowd-Sourced Predictions:')
-                            console.table(JSON.parse(bestPredictions))
+                            console.table(bestPredictions)
+                            updateSuperalgos(bestPredictions)
                         }
                         async function onError(err) {
                             console.log((new Date()).toISOString(), 'Failed to send a Report to the Test Server with the Test Case Results and get a Reward for that. Err:', err, 'Retrying in 10 seconds...')
@@ -57,6 +59,152 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                 console.log((new Date()).toISOString(), 'Failed to get a Test Case. Err:', err, 'Retrying in 10 seconds...')
                 await sleep(10000)
             }
+        }
+    }
+
+    function updateSuperalgos(bestPredictions) {
+
+        for (let j = 0; j < bestPredictions.length; j++) {
+            let bestPrediction = bestPredictions[j]
+            let forcastedCandlesFileContent
+            let newForcastedCandles = []
+            let percentageError = Number(bestPrediction.percentageErrorRMSE)
+            let newForcastedCandle = {
+                begin: bestPrediction.forcastedCandle.begin,
+                end: bestPrediction.forcastedCandle.end,
+                open: bestPrediction.forcastedCandle.open,
+                min: bestPrediction.predictions[1],
+                minPlusError: bestPrediction.predictions[1] + bestPrediction.predictions[1] * percentageError / 100,
+                minMinusError: bestPrediction.predictions[1] - bestPrediction.predictions[1] * percentageError / 100,
+                max: bestPrediction.predictions[0],
+                maxPlusError: bestPrediction.predictions[0] + bestPrediction.predictions[0] * percentageError / 100,
+                maxMinusError: bestPrediction.predictions[0] - bestPrediction.predictions[0] * percentageError / 100,
+                close: bestPrediction.predictions[2],
+                closePlusError: bestPrediction.predictions[2] + bestPrediction.predictions[2] * percentageError / 100,
+                closeMinusError: bestPrediction.predictions[2] - bestPrediction.predictions[2] * percentageError / 100
+            }
+            try {
+                /*
+                Read Current File from Superalgos Storage
+                */
+                forcastedCandlesFileContent = fs.readFileSync('D:/Superalgos-Factory/Platform/My-Data-Storage/Project/Data-Mining/Data-Mine/Bitcoin-Factory/Forecasts/binance/' + bestPrediction.mainAsset + '-USDT/Output/Forcasted-Candles/Multi-Time-Frame-Market/' + bestPrediction.mainTimeFrame + '/Data.json')
+
+                let forcastedCandlesFile = JSON.parse(forcastedCandlesFileContent)
+
+                let updated = false
+
+                for (let i = 0; i < forcastedCandlesFile.length; i++) {
+                    let forcastedCandleArray = forcastedCandlesFile[i]
+                    let forcastedCandle = {
+                        begin: forcastedCandleArray[0],
+                        end: forcastedCandleArray[1],
+                        open: forcastedCandleArray[2],
+                        min: forcastedCandleArray[3],
+                        minPlusError: forcastedCandleArray[4],
+                        minMinusError: forcastedCandleArray[5],
+                        max: forcastedCandleArray[6],
+                        maxPlusError: forcastedCandleArray[7],
+                        maxMinusError: forcastedCandleArray[8],
+                        close: forcastedCandleArray[9],
+                        closePlusError: forcastedCandleArray[10],
+                        closeMinusError: forcastedCandleArray[11]
+                    }
+
+                    if (forcastedCandle.begin < bestPrediction.forcastedCandle.begin) {
+                        newForcastedCandles.push(forcastedCandle)
+                    }
+                    if (forcastedCandle.begin === bestPrediction.forcastedCandle.begin) {
+                        newForcastedCandles.push(newForcastedCandle)
+                        updated = true
+                    }
+                }
+                if (updated === false) {
+                    newForcastedCandles.push(newForcastedCandle)
+                }
+            } catch (err) {
+                if (err.code === "ENOENT") {
+                    /*
+                    If the file does not exist, it is ok, probably this process was never ran before.
+                    */
+                    newForcastedCandles.push(newForcastedCandle)
+                } else {
+                    console.log("[ERROR] Cound not update Superalgos. " + err.stack)
+                    return
+                }
+            }
+            /*
+            Write Updated File into Superalgos Storage
+            */
+            let newForcastedCandlesFileContent = ""
+            newForcastedCandlesFileContent = newForcastedCandlesFileContent + "["
+            for (let i = 0; i < newForcastedCandles.length; i++) {
+                let newForcastedCandle = newForcastedCandles[i]
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + "["
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.begin
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.end
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.open
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.min
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.minPlusError
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.minMinusError
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.max
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.maxPlusError
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.maxMinusError
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.close
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.closePlusError
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.closeMinusError
+                newForcastedCandlesFileContent = newForcastedCandlesFileContent + "]"
+            }
+            newForcastedCandlesFileContent = newForcastedCandlesFileContent + "]"
+            let filePath = 'D:/Superalgos-Factory/Platform/My-Data-Storage/Project/Data-Mining/Data-Mine/Bitcoin-Factory/Forecasts/binance/' + bestPrediction.mainAsset + '-USDT/Output/Forcasted-Candles/Multi-Time-Frame-Market/' + bestPrediction.mainTimeFrame + '/'
+            mkDirByPathSync(filePath)
+            fs.writeFileSync(filePath + 'Data.json', newForcastedCandlesFileContent)
+        }
+
+        function mkDirByPathSync(targetDir, { isRelativeToScript = false } = {}) {
+            /* Function to create folders of missing folders at any path. */
+            /* If the directory is not being created, check that you are including a / at the end of the path */
+            const path = require("path")
+
+            targetDir = targetDir.substring(0, targetDir.lastIndexOf('/') + 1);
+
+            const sep = '/';
+            const initDir = path.isAbsolute(targetDir) ? sep : '';
+            const baseDir = isRelativeToScript ? __dirname : '.';
+
+            return targetDir.split(sep).reduce((parentDir, childDir) => {
+                const curDir = path.resolve(baseDir, parentDir, childDir);
+                try {
+                    const fs = require("fs")
+                    fs.mkdirSync(curDir);
+                } catch (err) {
+                    if (err.code === 'EEXIST') { // curDir already exists!
+                        return curDir;
+                    }
+
+                    // To avoid `EISDIR` error on Mac and `EACCES`-->`ENOENT` and `EPERM` on Windows.
+                    if (err.code === 'ENOENT') { // Throw the original parentDir error on curDir `ENOENT` failure.
+                        throw new Error(`EACCES: permission denied, mkdir '${parentDir}'`);
+                    }
+
+                    const caughtErr = ['EACCES', 'EPERM', 'EISDIR'].indexOf(err.code) > -1;
+                    if (!caughtErr || caughtErr && curDir === path.resolve(targetDir)) {
+                        throw err; // Throw if it's just the last created dir.
+                    }
+                }
+
+                return curDir;
+            }, initDir);
         }
     }
 
@@ -117,11 +265,11 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         console.log('-------------------------------------------------------- Test Case # ' + nextTestCase.id + ' / ' + nextTestCase.totalCases + ' --------------------------------------------------------')
         console.log('')
         console.log('Starting at this GMT Datetime: ', (new Date()).toISOString())
-        console.log('')        
+        console.log('')
         console.log('Parameters Received for this Test:')
         console.table(nextTestCase.parameters)
         console.log('')
-        
+
         let processExecutionResult
         let startingTimestamp = (new Date()).valueOf()
         return new Promise(promiseWork)
