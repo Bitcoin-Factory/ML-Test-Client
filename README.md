@@ -72,9 +72,23 @@ The Test Client app then wait for 10 seconds and repeat the process again, reque
 
 Yes, if you want to be receiving the crowd-sourced forecasts over time. Each new hour, the Test Server runs again the same set of tests, so that new forecasts can be obtained for relevant time-frames at that moment in time. 
 
-If you have this app running, you will be collecting all these forecasts and building over time, historical data with the forecasts received. That could later be used for backtesting strategies which relies on these forecasts. 
+If you have this app running, you will be collecting all these forecasts and building over time historical dataset with the forecasts received. That could later be used for backtesting strategies which relies on these forecasts. 
 
-If you already have a strategy that uses forcasts and you want to live trade with it, then you will need at least one Test Client App running to receive updated forecasts over time. If you run more than one Test Client at the same time, changes are that you will be updated with these forecasts more often, since the crowdsourced forcasts are received after each test you make (which might take several minutes), having more than one app doing test increases the frequency in which you get new forecasts.
+If you already have a strategy that uses forcasts and you want to live trade with it, then you will need at least one Test Client App running to receive updated forecasts over time. If you run more than one Test Client at the same time, chances are that you will be updated with these forecasts more often, since the crowd-sourced forcasts are received after each test you make (which might take several minutes), having more than one app doing tests increases the frequency in which you get new forecasts.
+
+NOTE: At the current version the Server is not running the same tests, and the data used might not be up-to-date. The reson for this is because this app is still under development.
+
+### How do we know which are the best Forecasts?
+
+Each tested models (created based on a set of parameters and a dataset) has a certain implied Error: the root-mean-square error (RMSE).
+
+https://en.wikipedia.org/wiki/Root-mean-square_deviation
+
+The whole point of crowd-testing is to find the model with the lowest % of error for a certain Asset/Time-Frame. (All forecasts are done at the Asset/USDT markets on Binance for now.)
+
+When you are running this App, you are testing certain combinations of parameters for a certain Asset/Time-Frame including a custom dataset for your specific test, which migh include a certain combination of indicators data.
+
+The crowd-sourced forecasts you receive after each test, are the ones belonging to ML models with the lowest % error for a certain Asset/Time-Frame.
 
 ### Scalability
 
