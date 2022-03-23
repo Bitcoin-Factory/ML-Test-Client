@@ -146,8 +146,11 @@ cd ..
 Run the Docker Container:
 
 ### on Windows
+
+Run the container with this commnad. Change the path if you did not install this App at the commands location.
+
 ```sh
-docker run -it --rm --name Bitcoin-Factory-ML -v /notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
+docker run -it --rm --name Bitcoin-Factory-ML -v C:/Bitcoin-Factory/ML-Test-Client/notebooks:/tf/notebooks -p 8888:8888 bitcoin-factory-machine-learning
 ```
 
 Run the App:
