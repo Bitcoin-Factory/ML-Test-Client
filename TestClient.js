@@ -12,6 +12,8 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
     const WEBRTC_MODULE = require('./ML-Test-WebRTC/WebRTC')
     const WEBRTC = WEBRTC_MODULE.newMachineLearningWebRTC()
 
+    const ENVIRONMENT = require("./Environment")
+
     return thisObject
 
     function initialize(testClientId) {
@@ -87,7 +89,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                 /*
                 Read Current File from Superalgos Storage
                 */
-                forcastedCandlesFileContent = fs.readFileSync('D:/Superalgos-Factory/Platform/My-Data-Storage/Project/Data-Mining/Data-Mine/Bitcoin-Factory/Forecasts/binance/' + bestPrediction.mainAsset + '-USDT/Output/Forcasted-Candles/Multi-Time-Frame-Market/' + bestPrediction.mainTimeFrame + '/Data.json')
+                forcastedCandlesFileContent = fs.readFileSync(ENVIRONMENT.PATH_TO_SUPERALGOS + '/Platform/My-Data-Storage/Project/Data-Mining/Data-Mine/Bitcoin-Factory/Forecasts/binance/' + bestPrediction.mainAsset + '-USDT/Output/Forcasted-Candles/Multi-Time-Frame-Market/' + bestPrediction.mainTimeFrame + '/Data.json')
 
                 let forcastedCandlesFile = JSON.parse(forcastedCandlesFileContent)
 
@@ -166,7 +168,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                 newForcastedCandlesFileContent = newForcastedCandlesFileContent + "]"
             }
             newForcastedCandlesFileContent = newForcastedCandlesFileContent + "]"
-            let filePath = 'D:/Superalgos-Factory/Platform/My-Data-Storage/Project/Data-Mining/Data-Mine/Bitcoin-Factory/Forecasts/binance/' + bestPrediction.mainAsset + '-USDT/Output/Forcasted-Candles/Multi-Time-Frame-Market/' + bestPrediction.mainTimeFrame + '/'
+            let filePath = ENVIRONMENT.PATH_TO_SUPERALGOS + '/Platform/My-Data-Storage/Project/Data-Mining/Data-Mine/Bitcoin-Factory/Forecasts/binance/' + bestPrediction.mainAsset + '-USDT/Output/Forcasted-Candles/Multi-Time-Frame-Market/' + bestPrediction.mainTimeFrame + '/'
             mkDirByPathSync(filePath)
             fs.writeFileSync(filePath + 'Data.json', newForcastedCandlesFileContent)
         }
