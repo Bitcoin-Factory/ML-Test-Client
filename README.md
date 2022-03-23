@@ -76,7 +76,7 @@ If you have this app running, you will be collecting all these forecasts and bui
 
 If you already have a strategy that uses forcasts and you want to live trade with it, then you will need at least one Test Client App running to receive updated forecasts over time. If you run more than one Test Client at the same time, chances are that you will be updated with these forecasts more often, since the crowd-sourced forcasts are received after each test you make (which might take several minutes), having more than one app doing tests increases the frequency in which you get new forecasts.
 
-NOTE: At the current version the Server is not running the same tests every hour, but some big set of tests that might take days to complete. Also the data used might not be up-to-date. The reson for this is because this app is still under development.
+NOTE: At the current version the Server is not running the same tests every hour, but some big set of tests that might take days to complete. Also the data used might not be up-to-date. The reason for this is because this app is still under development.
 
 ### How do we know which are the best Forecasts?
 
@@ -86,7 +86,7 @@ https://en.wikipedia.org/wiki/Root-mean-square_deviation
 
 The whole point of crowd-testing is to find the model with the lowest % of error for a certain Asset/Time-Frame. (All forecasts are done at the Asset/USDT markets on Binance for now.)
 
-When you are running this App, you are testing certain combinations of parameters for a certain Asset/Time-Frame including a custom dataset for your specific test, which migh include a certain combination of indicators data.
+When you are running this App, you are testing certain combinations of parameters for a certain Asset/Time-Frame including a custom dataset for your specific test, which might include a certain combination of indicators data.
 
 The crowd-sourced forecasts you receive after each test, are the ones belonging to ML models with the lowest % error for a certain Asset/Time-Frame.
 
