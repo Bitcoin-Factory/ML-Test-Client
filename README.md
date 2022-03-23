@@ -141,6 +141,8 @@ docker build -t bitcoin-factory-machine-learning .
 cd ..
 ```
 
+IMPORTANT NOTE: You need to have a 64 bit version of your OS, otherwise this is not going to work.
+
 ## Usage
 
 Run the Docker Container:
