@@ -4,13 +4,13 @@
 
 ### Why do we need this?
 
-When working with Machine Learning models, soon you realize that even though they could work to make financial predictions, you need to set a whole array of parameters that not only define the architecture of the model, but also the shape of the data and may other things. For each of these parameters, there is a valid range of values that could work, but only in combination with other parameters which also have their own valid ranges.
+When working with Machine Learning models, soon you realize that even though they could work to make financial forecasts, you need to set a whole array of parameters that not only define the architecture of the model, but also the shape of the data and may other things. For each of these parameters, there is a valid range of values that could work, but only in combination with other parameters which also have their own valid ranges.
 
-Nobody knows what combination is going to produce the best results. For this kind of problems, the results are measured by the error measured of the predictions that a trained model can proviede, compared with the actual values. In order to obtain the error measure, first a ML model with certain parameters and certain data need to be created and trained, which usually takes time. 
+Nobody knows what combination is going to produce the best results. For this kind of problems, the results are measured by the error measured of the forecasts that a trained model can proviede, compared with the actual values. In order to obtain the error measure, first a ML model with certain parameters and certain data need to be created and trained, which usually takes time. 
 
 Testing combinations of parameters and data (with potentially hundreds of indicators to choose from, thousands of crypto assets, and dozens of time-frames) by hand, would be a nightmare. This system solves that problems by automating the discovery of the best performing ML models, for a certain range of parameters values and certain set of indicators. 
 
-It allows us to define for each parameter a range of valid values, creating a set of Test Cases based on all the possible combinations of all the values inside the valid  ranges for all parameters. Then we only need distributed processing power to test all the combinations in a reasonable time and find which parameters / data configurations produces the best results. Best results means the best predictions in crypto markets.
+It allows us to define for each parameter a range of valid values, creating a set of Test Cases based on all the possible combinations of all the values inside the valid  ranges for all parameters. Then we only need distributed processing power to test all the combinations in a reasonable time and find which parameters / data configurations produces the best results. Best results means the best forecasts in crypto markets.
 
 Over time, we will learn how to trim those ranges so that finally we need to search for the best performing models at a narrower space. At a production environment we will be forever testing since datasets are changing over time. 
 
@@ -47,7 +47,7 @@ It is important to understand that this APP does not prepare the dataset to be t
 
 ### How does this App work?
 
-This app is used to autonomously test different set of parameters to see which Machine Learnning models can make better predictions.
+This app is used to autonomously test different set of parameters to see which Machine Learnning models can make better forecasts.
 
 This is the Client part of a system that also has a Server part. The Test Server app manages a set of different Test Cases that needs to be tried out.
 
@@ -60,9 +60,21 @@ Once a Test Case is received, the Test Client app will write 2 files at the note
 
 After these files are written, the Test Client App will execute inside the Tensor Flow container the Bitcoin_Factory_LSTM.py script. 
 
-This script reads boths files, and creates a ML model using the provided parameters and the data at the time-series file. It's execution could take several minutes. Once finished, a set of results are sent back from the Python script to the Test Client app, which in turn sends via webRTC the results to the Test Server app. This app creates a report at Google Sheets with all the consolidated test results provided by all the Test Clients that contributed running the individual tests.
+This script reads boths files, and creates a ML model using the provided parameters and the data at the time-series file. It's execution could take several minutes. Once finished, a set of results are sent back from the Python script to the Test Client app, which in turn sends via webRTC the results to the Test Server app. This app creates a report with the best forecasts from all the Test Clients participating testing different sets of parameters. 
+
+This consolidated report with the best crowd-sourced forecasts is sent back to each Test Client as a response to their own report with the results of their latest test.  
+
+The Test Client app once it receives this report, it saves as a Superalgos indicator under the Bitcoin-Factory Data Mine all the crowdsourced forecasts received.
 
 The Test Client app then wait for 10 seconds and repeat the process again, requesting a new Test Case to test.
+
+### Should I leave this App Running?
+
+Yes, if you want to be receiving the crowd-sourced forecasts over time. Each new hour, the Test Server runs again the same set of tests, so that new forecasts can be obtained for relevant time-frames at that moment in time. 
+
+If you have this app running, you will be collecting all these forecasts and building over time, historical data with the forecasts received. That could later be used for backtesting strategies which relies on these forecasts. 
+
+If you already have a strategy that uses forcasts and you want to live trade with it, then you will need at least one Test Client App running to receive updated forecasts over time. If you run more than one Test Client at the same time, changes are that you will be updated with these forecasts more often, since the crowdsourced forcasts are received after each test you make (which might take several minutes), having more than one app doing test increases the frequency in which you get new forecasts.
 
 ### Scalability
 
@@ -175,6 +187,28 @@ node runTestClient Your-Test-Client-Id
 
 Early test on Raspbian has shown difficulties to build the docker image. If you manage to make it work with this OS please report back so that we update the specific instructions for it.
 
+## Upgrade
+
+The procedure to upgrade this App is the following: Open a Terminal at the ML-Test-Client folder. The you need to pull again the app repository and the WebRTC repository.
+
+```sh
+git pull
+cd ML-Test-WebRTC
+git pull
+```
+
+## Environmet Settings
+
+There is an Environment.json file with settings you can adjust. As of today the only setting is the path to your Superalgos installation.
+
+```sh
+{
+    "PATH_TO_SUPERALGOS": "C:/Superalgos"
+}
+```
+
+This app will use this path to save the best crowd-sourced forecasts as an Indicator in Superalgos, that you can consume via the Bitcoin-Factory Data Mine.
+
 ## Troubleshooting - Docker Cheat Sheet
 
 If you get the error:
@@ -190,13 +224,3 @@ docker container prune
 ```
 
 to fix it.
-
-## Upgrade
-
-The procedure to upgrade this App is the following: Open a Terminal at the ML-Test-Client folder. The you need to pull again the app repository and the WebRTC repository.
-
-```sh
-git pull
-cd ML-Test-WebRTC
-git pull
-```
