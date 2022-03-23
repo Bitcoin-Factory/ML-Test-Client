@@ -124,6 +124,10 @@ timeseries_dataset = read_csv(
 timeseries_dataset
 
 
+# ## Duplicate the Last Record
+
+# The reframing process shift each record to the left of the shifting window, producing that the last record of data is ignored at the last prediction. To fix this we will duplicate the last record so that the last prediction belongs to the the last piece of information available.
+
 # In[6]:
 
 
@@ -133,15 +137,29 @@ values = timeseries_dataset.values
 # In[7]:
 
 
+last_record = values[-1:,:]
+last_record
+
+
+# In[8]:
+
+
+all_records = concatenate((values, last_record), axis=0)
+all_records
+
+
+# In[9]:
+
+
 # ensure all data is float
-values = values.astype('float32')
+values = all_records.astype('float32')
 
 
 # ## Plot & Verify
 
 # We plot our raw data just to be sure with a glimpse that it is alright.
 
-# In[8]:
+# In[10]:
 
 
 # specify columns to plot
@@ -161,7 +179,7 @@ pyplot.show()
 
 # Normalizing or removing the scale, is a standar prodcedure of any machine learning workflow. 
 
-# In[9]:
+# In[11]:
 
 
 # normalize features
@@ -173,14 +191,14 @@ scaled = scaler.fit_transform(values)
 
 # Each Raw record needs to be expanded with the previous records in order to be suitable for beeing fed into a LSTM model. Some fields of the record at time = 0 will be used as labels and the ones at time < 0 as features.
 
-# In[10]:
+# In[12]:
 
 
 # frame as supervised learning
 reframed = series_to_supervised(scaled, NUMBER_OF_LAG_TIMESTEPS, 1)
 
 
-# In[11]:
+# In[13]:
 
 
 reframed
@@ -190,7 +208,7 @@ reframed
 
 # The first part of the dataset will be used to train the model. The last part for calculating the prediction error. Later we will generate the predictions for the test dataset and measure how accurate they were.
 
-# In[12]:
+# In[14]:
 
 
 # get values from reframed dataset
@@ -200,7 +218,7 @@ records_for_training = int(record_count * PERCENTAGE_OF_DATASET_FOR_TRAINING / 1
 records_for_training
 
 
-# In[13]:
+# In[15]:
 
 
 # split into train and test sets
@@ -208,13 +226,13 @@ train = values[:records_for_training, :]
 test = values[records_for_training:, :]
 
 
-# In[14]:
+# In[16]:
 
 
 train.shape
 
 
-# In[15]:
+# In[17]:
 
 
 test.shape
@@ -225,7 +243,7 @@ test.shape
 # Here we will split both the Train and the Test datasets into features and labels. 
 # Features will be all the information where time < 0. For the labels, we will pick only the first 2 fields of each set of indicator properties, which we expect them to contain the Candle Max and Candle Min for each Asset.
 
-# In[16]:
+# In[18]:
 
 
 # split into input and outputs
@@ -238,13 +256,13 @@ test_X = test[:, :n_obs]
 test_y = test[:, -NUMBER_OF_FEATURES:-(NUMBER_OF_FEATURES-NUMBER_OF_LABELS)]
 
 
-# In[17]:
+# In[19]:
 
 
 train_X
 
 
-# In[18]:
+# In[20]:
 
 
 train_y
@@ -254,7 +272,7 @@ train_y
 
 # This type of Network Architecture requires the features to be in a 3D shape.
 
-# In[19]:
+# In[21]:
 
 
 # reshape input to be 3D [samples, timesteps, features]
@@ -266,7 +284,7 @@ test_X = test_X.reshape((test_X.shape[0], NUMBER_OF_LAG_TIMESTEPS, NUMBER_OF_FEA
 
 # Here we are using an LSTM architecture for our neural network. This is the type of architecture usually used for problems involving time-series.
 
-# In[20]:
+# In[22]:
 
 
 # design network
@@ -280,7 +298,7 @@ model.compile(loss='mae', optimizer='adam')
 
 # We print this output so that the caller program can get the results in a JSON object.
 
-# In[21]:
+# In[23]:
 
 
 print('{')
@@ -289,7 +307,7 @@ print('"trainingOutput": "')
 
 # This is the actual process of training the neural network. 
 
-# In[22]:
+# In[24]:
 
 
 # fit network
@@ -304,7 +322,7 @@ history = model.fit(
 )
 
 
-# In[23]:
+# In[25]:
 
 
 print('"')
@@ -312,7 +330,7 @@ print('"')
 
 # ## Plot Fitting History
 
-# In[24]:
+# In[26]:
 
 
 # plot history
@@ -326,7 +344,7 @@ pyplot.show()
 
 # Here we take all Test Records and get a prediction for each one of them. 
 
-# In[25]:
+# In[27]:
 
 
 # make a prediction
@@ -334,7 +352,7 @@ yhat = model.predict(test_X)
 test_X = test_X.reshape((test_X.shape[0], NUMBER_OF_LAG_TIMESTEPS*NUMBER_OF_FEATURES))
 
 
-# In[26]:
+# In[28]:
 
 
 yhat
@@ -344,7 +362,7 @@ yhat
 # 
 # For inverting the scale (denormalize) of a test record, we need first to unframe the test_X values so as the get the original record. Since the label was the first colum of the record, we concatenate the prediction to the last columns of the framed record.
 
-# In[27]:
+# In[29]:
 
 
 # invert scaling for forecast
@@ -354,7 +372,7 @@ inv_yhat = inv_yhat[:,:NUMBER_OF_LABELS]
 inv_yhat
 
 
-# In[28]:
+# In[30]:
 
 
 # invert scaling for actual
@@ -368,7 +386,7 @@ inv_y
 
 # ### Main Error Value
 
-# In[29]:
+# In[31]:
 
 
 # calculate RMSE
@@ -379,7 +397,7 @@ rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
 
 # ### Alternative Error Analisys
 
-# In[30]:
+# In[32]:
 
 
 # my way to calculating Errors
@@ -390,7 +408,7 @@ errors
 
 # ### Plot of the % of Error of each Predicted Value 
 
-# In[31]:
+# In[33]:
 
 
 # plot errors
@@ -402,7 +420,7 @@ pyplot.show()
 
 # In the context of the Test dataset, this is what we get if we substract the Actual Value to the Predicted Value.
 
-# In[32]:
+# In[34]:
 
 
 diff = (inv_yhat - inv_y) 
@@ -414,25 +432,13 @@ diff
 
 # Here we are returning the predictions to the caller program. Only the last row of predictions are needed because they belong to the latest closed candle. 
 
-# In[33]:
+# In[35]:
 
 
 print(',"predictions": "', inv_yhat[-1], '"' )
 
 
-# In[34]:
-
-
-print(',"actualValues": "', inv_y[-1], '"' )
-
-
-# In[35]:
-
-
-print(',"difference": "', diff[-1], '"' )
-
-
-# In[36]:
+# In[38]:
 
 
 print(',"errorRMSE": %.3f' % rmse)

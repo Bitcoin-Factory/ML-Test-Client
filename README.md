@@ -171,6 +171,10 @@ Run the App:
 node runTestClient Your-Test-Client-Id
 ```
 
+## On Raspbian
+
+Early test on Raspbian has shown difficulties to build the docker image. If you manage to make it work with this OS please report back so that we update the specific instructions for it.
+
 ## Troubleshooting - Docker Cheat Sheet
 
 If you get the error:

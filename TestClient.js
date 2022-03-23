@@ -316,19 +316,11 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                 try {
 
                     processExecutionResult = JSON.parse(dataReceived)
-
                     processExecutionResult.predictions = fixJSON(processExecutionResult.predictions)
-                    processExecutionResult.actualValues = fixJSON(processExecutionResult.actualValues)
-                    processExecutionResult.difference = fixJSON(processExecutionResult.difference)
-
                     processExecutionResult.predictions = JSON.parse(processExecutionResult.predictions)
-                    processExecutionResult.actualValues = JSON.parse(processExecutionResult.actualValues)
-                    processExecutionResult.difference = JSON.parse(processExecutionResult.difference)
 
                     console.log('Prediction RMSE Error: ' + processExecutionResult.errorRMSE)
-                    console.log('Predictions: ' + processExecutionResult.predictions)
-                    console.log('Actual Values: ' + processExecutionResult.actualValues)
-                    console.log('Differences: ' + processExecutionResult.difference)
+                    console.log('Predictions [candle.max, candle.min, candle.close]: ' + processExecutionResult.predictions)
 
                     let endingTimestamp = (new Date()).valueOf()
                     processExecutionResult.enlapsedTime = (endingTimestamp - startingTimestamp) / 1000
@@ -338,12 +330,6 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
                     if (processExecutionResult !== undefined && processExecutionResult.predictions !== undefined) {
                         console.log('processExecutionResult.predictions:' + processExecutionResult.predictions)
-                    }
-                    if (processExecutionResult !== undefined && processExecutionResult.actualValues !== undefined) {
-                        console.log('processExecutionResult.actualValues:' + processExecutionResult.actualValues)
-                    }
-                    if (processExecutionResult !== undefined && processExecutionResult.difference !== undefined) {
-                        console.log('processExecutionResult.difference:' + processExecutionResult.difference)
                     }
 
                     console.log(err.stack)
