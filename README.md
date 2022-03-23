@@ -190,3 +190,13 @@ docker container prune
 ```
 
 to fix it.
+
+## Upgrade
+
+The procedure to upgrade this App is the following. Open a Terminal at the ML-Test-Client folder. The you need to pull again the app repository and the WebRTC repository.
+
+```sh
+git pull
+cd ML-Test-WebRTC
+git pull
+```
