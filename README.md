@@ -145,7 +145,74 @@ IMPORTANT NOTE: You need to have a 64 bit version of your OS, otherwise this is 
 
 ## Usage
 
-Run the Docker Container:
+Run the Docker Container and then run the Test Client App. You will need to Terminals for that, at one of them the docker container will be running, and at the second one, you will run the App.
+
+Once the docker container is running correctly you will see at the first terminal an ouput similar to this:
+
+```sh
+[I 12:58:36.546 NotebookApp] Writing notebook server cookie secret to /home/ubuntu/.local/share/jupyter/runtime/notebook_cookie_secret
+[I 12:58:37.532 NotebookApp] Serving notebooks from local directory: /tf/notebooks
+[I 12:58:37.532 NotebookApp] Jupyter Notebook 6.4.10 is running at:
+[I 12:58:37.533 NotebookApp] http://aa1b305587bd:8888/?token=49c135d693e0b4d07d8c0164410ee6fc4593ac5e0578a34a
+[I 12:58:37.533 NotebookApp]  or http://127.0.0.1:8888/?token=49c135d693e0b4d07d8c0164410ee6fc4593ac5e0578a34a
+[I 12:58:37.533 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 12:58:37.544 NotebookApp]
+
+    To access the notebook, open this file in a browser:
+        file:///home/ubuntu/.local/share/jupyter/runtime/nbserver-1-open.html
+    Or copy and paste one of these URLs:
+        http://aa1b305587bd:8888/?token=49c135d693e0b4d07d8c0164410ee6fc4593ac5e0578a34a
+     or http://127.0.0.1:8888/?token=49c135d693e0b4d07d8c0164410ee6fc4593ac5e0578a34a
+
+```
+
+At that terminal there is no further action required. 
+
+At the second terminal, once  you run the App, you will see, after 10 seconds an output similar to this one:
+
+```sh
+-------------------------------------------------------- Test Case # 1 / 3192 --------------------------------------------------------
+
+Starting at this GMT Datetime:  2022-03-24T10:00:55.115Z
+
+Parameters Received for this Test:
+┌────────────────────────────────────┬─────────┬────────┐
+│              (index)               │    0    │ Values │
+├────────────────────────────────────┼─────────┼────────┤
+│           LIST_OF_ASSETS           │  'BTC'  │        │
+│         LIST_OF_TIMEFRAMES         │ '03-hs' │        │
+│  NUMBER_OF_INDICATORS_PROPERTIES   │         │   5    │
+│      NUMBER_OF_LAG_TIMESTEPS       │         │   8    │
+│          NUMBER_OF_ASSETS          │         │   1    │
+│          NUMBER_OF_LABELS          │         │   3    │
+│ PERCENTAGE_OF_DATASET_FOR_TRAINING │         │   80   │
+│         NUMBER_OF_FEATURES         │         │   5    │
+│          NUMBER_OF_EPOCHS          │         │  300   │
+│       NUMBER_OF_LSTM_NEURONS       │         │   50   │
+└────────────────────────────────────┴─────────┴────────┘
+
+```
+
+There is no more needed actions from your side. After between 15 and 30 minutes, depoending on the Test Case that was assigned to you, you will see an output like this:
+
+```sh
+Docker Python Script exited with code 0
+Prediction RMSE Error: 368.83
+Predictions [candle.max, candle.min, candle.close]: 43278.008,42785.055,43028.305
+Enlapsed Time (HH:MM:SS): 14:29
+
+Best Crowd-Sourced Predictions:
+┌─────────┬────┬───────────┬───────────────┬─────────────────────┬─────────────────────────────────────┬─────────────────┐
+│ (index) │ id │ mainAsset │ mainTimeFrame │ percentageErrorRMSE │             predictions             │ forcastedCandle │
+├─────────┼────┼───────────┼───────────────┼─────────────────────┼─────────────────────────────────────┼─────────────────┤
+│    0    │ 14 │   'BTC'   │    '01-hs'    │       '0.59'        │  [ 43316.723, 42906.44, 43185.24 ]  │    [Object]     │
+│    1    │ 31 │   'BTC'   │    '02-hs'    │       '0.85'        │ [ 43278.008, 42785.055, 43028.305 ] │    [Object]     │
+└─────────┴────┴───────────┴───────────────┴─────────────────────┴─────────────────────────────────────┴─────────────────┘
+```
+
+Once you see this at least once, that means that your Client App is running 100% well and you should leave it alone. Even if you see messages that the server is not available, don't worry, the server might need to be restarted from time to time, your app will automatically reconnect and continue processing Test Cases when they are available.
+
+For specific information on how to run the Docker Container and the App at different OS, please read the following sections:
 
 ### on Windows
 
