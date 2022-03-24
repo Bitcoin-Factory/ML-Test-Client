@@ -145,7 +145,7 @@ IMPORTANT NOTE: You need to have a 64 bit version of your OS, otherwise this is 
 
 ## Usage
 
-Run the Docker Container and then run the Test Client App. You will need to Terminals for that, at one of them the docker container will be running, and at the second one, you will run the App.
+Run the Docker Container and then run the Test Client App. You will need 2 Terminals for that, at one of them the docker container will be running, and at the second one, you will run the App.
 
 Once the docker container is running correctly you will see at the first terminal an ouput similar to this:
 
@@ -193,7 +193,7 @@ Parameters Received for this Test:
 
 ```
 
-There is no more needed actions from your side. After between 15 and 30 minutes, depoending on the Test Case that was assigned to you, you will see an output like this:
+There are no more needed actions from your side. After between 15 and 30 minutes, depending on the Test Case that was assigned to you, you will see an output like this:
 
 ```sh
 Docker Python Script exited with code 0
@@ -211,6 +211,18 @@ Best Crowd-Sourced Predictions:
 ```
 
 Once you see this at least once, that means that your Client App is running 100% well and you should leave it alone. Even if you see messages that the server is not available, don't worry, the server might need to be restarted from time to time, your app will automatically reconnect and continue processing Test Cases when they are available.
+
+### Multiple Instances of the Test App
+
+If you wish, you can run multiple instances of the Test App. For that you will need multiple User Ids. 
+
+Only one Docker Container needs to be running even if you run more than one instance of the Test App.
+
+Depending on your hardware, your machine might do well with 2 or 3 instances running, monitor the CPU usage to see which is the limit for your specific hardware.
+
+When you are running more than one instance, chances are that you will get the best crowd-sourced forcasts more often.
+
+## Instructions for each OS
 
 For specific information on how to run the Docker Container and the App at different OS, please read the following sections:
 
@@ -241,7 +253,7 @@ tory-machine-learning
 sudo node runTestClient Your-Test-Client-Id
 ```
 
-## on Mac OS
+### on Mac OS
 
 ### File Sharing
 
@@ -269,11 +281,11 @@ Run the App:
 node runTestClient Your-Test-Client-Id
 ```
 
-## On Raspbian
+### On Raspbian
 
 Early test on Raspbian has shown difficulties to build the docker image. If you manage to make it work with this OS please report back so that we update the specific instructions for it.
 
-## Upgrade
+## How to Upgrade
 
 The procedure to upgrade this App is the following: Open a Terminal at the ML-Test-Client folder. The you need to pull again the app repository and the WebRTC repository.
 
