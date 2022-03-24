@@ -118,7 +118,6 @@ cd Bitcoin-Factory
 git clone http://github.com/Bitcoin-Factory/ML-Test-Client
 cd ML-Test-Client
 git clone http://github.com/Bitcoin-Factory/ML-Test-WebRTC
-cd ..
 npm install node-pre-gyp
 npm update
 ```
