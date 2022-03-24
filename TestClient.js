@@ -124,9 +124,9 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                     newForcastedCandles.push(newForcastedCandle)
                 }
             } catch (err) {
-                if (err.code === "ENOENT") {
+                if (err.code === "ENOENT" || err.message.indexOf('Unexpected token') >= 0) {
                     /*
-                    If the file does not exist, it is ok, probably this process was never ran before.
+                    If the file does not exist or it is not a valid JSON object, it is ok, probably this process was never ran before or ran with a bug that corrupted the file.
                     */
                     newForcastedCandles.push(newForcastedCandle)
                 } else {
@@ -141,6 +141,9 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
             newForcastedCandlesFileContent = newForcastedCandlesFileContent + "["
             for (let i = 0; i < newForcastedCandles.length; i++) {
                 let newForcastedCandle = newForcastedCandles[i]
+                if (i > 0) {
+                    newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
+                }
                 newForcastedCandlesFileContent = newForcastedCandlesFileContent + "["
                 newForcastedCandlesFileContent = newForcastedCandlesFileContent + newForcastedCandle.begin
                 newForcastedCandlesFileContent = newForcastedCandlesFileContent + ","
