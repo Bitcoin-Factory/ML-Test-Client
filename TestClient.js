@@ -34,23 +34,32 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                     fs.writeFileSync("./notebooks/parameters.csv", nextTestCase.files.parameters)
                     fs.writeFileSync("./notebooks/time-series.csv", nextTestCase.files.timeSeries)
 
-                    let testResult = await buildModel(nextTestCase)
+                    await buildModel(nextTestCase)
+                        .then(onSuccess)
+                        .catch(onError)
 
-                    if (testResult !== undefined) {
-                        testResult.id = nextTestCase.id
-                        await setTestCaseResults(testResult)
-                            .then(onSuccess)
-                            .catch(onError)
-                        async function onSuccess(response) {
-                            let bestPredictions = JSON.parse(response)
-                            console.log(' ')
-                            console.log('Best Crowd-Sourced Predictions:')
-                            console.table(bestPredictions)
-                            updateSuperalgos(bestPredictions)
+                    async function onSuccess(testResult) {
+                        if (testResult !== undefined) {
+                            testResult.id = nextTestCase.id
+                            await setTestCaseResults(testResult)
+                                .then(onSuccess)
+                                .catch(onError)
+                            async function onSuccess(response) {
+                                let bestPredictions = JSON.parse(response)
+                                console.log(' ')
+                                console.log('Best Crowd-Sourced Predictions:')
+                                console.table(bestPredictions)
+                                updateSuperalgos(bestPredictions)
+                            }
+                            async function onError(err) {
+                                console.log((new Date()).toISOString(), 'Failed to send a Report to the Test Server with the Test Case Results and get a Reward for that. Err:', err, 'Aborting the processing of this case and retrying the main loop in 10 seconds...')
+                            }
                         }
-                        async function onError(err) {
-                            console.log((new Date()).toISOString(), 'Failed to send a Report to the Test Server with the Test Case Results and get a Reward for that. Err:', err, 'Retrying in 10 seconds...')
-                        }
+                    }
+
+                    async function onError(err) {
+                        console.log((new Date()).toISOString(), 'Failed to Build the Model for this Test Case. Err:', err, 'Aborting the processing of this case and retrying the main loop in 10 seconds...')
+                        await sleep(10000)
                     }
                 } else {
                     console.log((new Date()).toISOString(), 'Nothing to Test', 'Retrying in 10 seconds...')
