@@ -120,6 +120,8 @@ It might take time, but our collective intelligence can only improve over time.
 
 And all that finding and forecasting is 100% automated. Only computers working together. The more people join the effort, the faster we find better models, the better the forecasts become for all the people participating. Beautiful, ins't it?
 
+Having said that, please don't expect that at the begining the forecasts will be precise. We are brute forcing the discovery of which are the best combination of parameters and data for each Asset / Timeframe and that might take a while to produce models with reasonable performance, but once we have them, we have them forever.
+
 ### Scalability
 
 Since the Test Client and Test Server interact in a p2p way via webRTC, that means that we can run a Test Server at home and get help to process Test Cases from anywhere in the world without the need to pay for cloud servers, and almost without limits regarding the amount of people that can help.
