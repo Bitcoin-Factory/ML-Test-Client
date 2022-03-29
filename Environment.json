@@ -1,3 +1,4 @@
 {
-    "PATH_TO_SUPERALGOS": "C:/Superalgos"
+    "SUPERALGOS_HOST": "localhost",
+    "SUPERALGOS_HTTP_PORT": 34248
 }
