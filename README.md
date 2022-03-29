@@ -114,7 +114,7 @@ The crowd-sourced forecasts you receive after each test, are the ones belonging 
 
 ### Why is this System Beautiful?
 
-Because the precision of the forcasts can only improve over time. Think about it, once we find for instance the right set of parameters and data for BTC / 1Hs, that have for instance a 0.8 % of error, we will be forcasting with this model until the minute anyone in the crowd finds another set of parameters and data for BTC / 1Hs with a lower error, let's say 0.6, and you guess, from there on, all forcast will be done with that ML model until the day someone el finds another one with even less % error.
+Because the precision of the forcasts can only improve over time. Think about it, once we find for instance the right set of parameters and data for BTC / 1Hs, that have for instance a 0.8 % of error, we will be forcasting with this model until the minute anyone in the crowd finds another set of parameters and data for BTC / 1Hs with a lower error, let's say 0.6, and you guess, from there on, all forcast will be done with that ML model until the day someone else finds another one with even less % error.
 
 It might take time, but our collective intelligence can only improve over time. 
 
