@@ -299,15 +299,19 @@ git pull
 
 ## Environmet Settings
 
-There is an Environment.json file with settings you can adjust. As of today the only setting is the path to your Superalgos installation.
+There is an Environment.json file with settings you can adjust. As of today these are the only settings you can change.
 
 ```sh
 {
-    "PATH_TO_SUPERALGOS": "C:/Superalgos"
+    "SUPERALGOS_HOST": "localhost",
+    "SUPERALGOS_HTTP_PORT": 34248
 }
 ```
 
-This app will use this path to save the best crowd-sourced forecasts as an Indicator in Superalgos, that you can consume via the Bitcoin-Factory Data Mine.
+This app will use this settings to send the best crowd-sourced forecasts to Superalgos so that they are saved there as an Indicator, that you can consume via the Bitcoin-Factory Data Mine.
+
+Note 1: You don't need to run Superalgos at the same machine you are running this Test Client. Superalgos can be running at any place reachable from this App.
+Node 2: You don't need more than one Superalgos installation even if you are running multiple instances of this App at one or more manchines. You can point them all to a single Superalgos installations and all of them will send the best crowd-sourced forecasts to the same Superalgos instance with not issues. 
 
 ## Troubleshooting - Docker Cheat Sheet
 

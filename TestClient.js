@@ -75,6 +75,11 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
     function updateSuperalgos(bestPredictions) {
 
+        for (let i = 0; i < bestPredictions.length; i++) {
+            let prediction = bestPredictions[i]
+            prediction.parameters = {}
+        }
+
         let params = {
             method: 'updateForecastedCandles',
             forcastedCandles: JSON.stringify(bestPredictions)
@@ -84,10 +89,10 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         axios
             .post('http://' + ENVIRONMENT.SUPERALGOS_HOST + ':' + ENVIRONMENT.SUPERALGOS_HTTP_PORT + '/Bitcoin-Factory', params)
             .then(res => {
-                console.log((new Date()).toISOString(), 'Updating Superalgos', 'Response from Superalgos Bitcoin Factory Server: ' + JSON.stringify(res.data))
+                console.log((new Date()).toISOString(), 'Updating Superalgos...', 'Response from Superalgos Bitcoin Factory Server: ' + JSON.stringify(res.data))
             })
             .catch(error => {
-                console.log((new Date()).toISOString(), 'Updating Superalgos', 'Could not update Superalgos. Had this error: ' + error)
+                console.log((new Date()).toISOString(), 'Updating Superalgos...', 'Could not update Superalgos. Had this error: ' + error)
             })
     }
 
