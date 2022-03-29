@@ -16,7 +16,8 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
 
     return thisObject
 
-    function initialize(testClientId) {
+    async function initialize() {
+        let testClientId = await getTestClientId()
         WEBRTC.initialize(testClientId)
     }
 
@@ -70,6 +71,37 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                 console.log((new Date()).toISOString(), 'Failed to get a Test Case. Err:', err, 'Retrying in 10 seconds...')
                 await sleep(10000)
             }
+        }
+    }
+
+    async function getTestClientId() {
+
+        return new Promise(promiseWork)
+
+        function promiseWork(resolve, reject) {
+            let params = {
+                method: 'getTestClientInstanceId',
+                networkCodeName: ENVIRONMENT.BITCOIN_FACTORY_FORECASTS_NETWORK_NAME,
+                userProfile: ENVIRONMENT.SUPERALGOS_USER_PROFILE,
+                clientName: ENVIRONMENT.TEST_CLIENT_INSTANCE_NAME
+            }
+
+            const axios = require("axios")
+            axios
+                .post('http://' + ENVIRONMENT.SUPERALGOS_HOST + ':' + ENVIRONMENT.SUPERALGOS_HTTP_PORT + '/Bitcoin-Factory', params)
+                .then(res => {
+                    console.log((new Date()).toISOString(), 'Checking with Superalgos...', 'Response from Superalgos Bitcoin Factory Server: ' + JSON.stringify(res.data))
+
+                    if (res.data.result === 'Ok') {
+                        resolve(res.data.clientId)
+                    } else {
+                        reject()
+                    }
+                })
+                .catch(error => {
+                    console.log((new Date()).toISOString(), 'Checking with Superalgos...', 'Could not check with Superalgos. Had this error: ' + error)
+                    reject()
+                })
         }
     }
 
@@ -152,7 +184,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
         console.log('')
         console.log('-------------------------------------------------------- Test Case # ' + nextTestCase.id + ' / ' + nextTestCase.totalCases + ' --------------------------------------------------------')
         console.log('')
-        console.log('Starting at this GMT Datetime: ', (new Date()).toISOString())
+        console.log((new Date()).toISOString(), 'Starting processing this Case')
         console.log('')
         console.log('Parameters Received for this Test:')
         console.table(nextTestCase.parameters)

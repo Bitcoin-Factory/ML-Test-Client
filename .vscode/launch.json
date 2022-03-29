@@ -12,7 +12,7 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\runTestClient.js",
-            "args": ["VSCode-Test-Client"]
+            "args": []
         }
     ]
 }
