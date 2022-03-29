@@ -246,7 +246,7 @@ Once you see this at least once, that means that your Client App is running 100%
 
 ### Multiple Instances of the Test App
 
-If you wish, you can run multiple instances of the Test App. For that you will need multiple User Ids. 
+If you wish, you can run multiple instances of the Test App. For that you will need multiple Test Client Instances at your Superalgos User Profile. 
 
 Only one Docker Container needs to be running even if you run more than one instance of the Test App.
 
