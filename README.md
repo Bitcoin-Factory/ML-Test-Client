@@ -152,6 +152,7 @@ For your Test Client App to work and be able to connect to the Test Server you n
 3. You will need to assing each Test Client Instance some SA token power if you wish to receive the best crowd-sourced predictions at the end of each of your tests. How much token power for each prediction is to be determined in the near future once the assigned token power will be checked at a future release.
 
 Note 1: Once you add those nodes to your profile you still needs to contribute it and it needs to be merged. After that you will need to wait until the Test Server updates it's Superalgos installation that as of today is a manual task. If you are exited and would like to speed this process up, please contact me on Telegram. (@luis_fernando_molina)
+
 Note 2: In the future, pending a deeper integration with the Superalgos Governance system, you will be able to receive SA tokens for each Test Case you have processed. We will start counting the solved Test Cases from now.
 
 ## Setup
@@ -367,7 +368,6 @@ git pull
 cd ML-Test-WebRTC
 git pull
 ```
-
 
 ## Troubleshooting - Docker Cheat Sheet
 
