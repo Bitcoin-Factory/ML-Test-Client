@@ -6,19 +6,21 @@
 
 When working with Machine Learning models, soon you realize that even though they could work to make financial forecasts, you need to set a whole array of parameters that not only define the architecture of the model, but also the shape of the data and may other things. For each of these parameters, there is a valid range of values that could work, but only in combination with other parameters which also have their own valid ranges.
 
-Nobody knows what combination is going to produce the best results for a particular Asset / Timeframe. For this kind of problems, the results are measured by the error measured of the forecasts that a trained model can proviede, compared with the actual values. In order to obtain the error measure, first a ML model with certain parameters and certain data need to be created and trained, which usually takes time (from 5 to hundresds of minutes). 
+Nobody knows what combination is going to produce the best results for a particular Asset / Timeframe. Machine Learning models accuracy is determined by the error measured when producing forecasts using a test dataset after training the model. These forecasts are compared with the actual values and from there an objective Error measure is taken. 
 
-Testing combinations of parameters and data (with potentially hundreds of indicators to choose from, thousands of crypto assets, and dozens of time-frames) by hand, would be a nightmare. This system solves those problems by automating the discovery of the best performing ML models, for a certain range of parameters values and certain set of indicators, for each combination of Asset / Timeframe. 
+In order to obtain that error measure, first a ML model with certain parameters and certain data need to be created and trained, which usually takes time (from a few minutes to potentially hours). 
 
-It allows us to define for each parameter a range of valid values, creating a set of Test Cases based on all the possible combinations of all the values inside the valid  ranges for all parameters. Then we only need distributed processing power to test all the combinations in a reasonable time and find which parameters / data configurations produces the best results. Best results means the best forecasts with the lowest % of error.
+Testing combinations of parameters and data (with potentially hundreds of indicators to choose from, thousands of crypto assets, and dozens of time-frames) by hand, one by one, would be a nightmare. The system from which this App is part of, solves those problems by automating the discovery of the best performing ML models, for a certain range of parameters values and certain set of indicators, for each combination of Asset / Timeframe. 
 
-Over time, we will learn we will learn which set of parameters and data produces the best model for a certain Asset / Timeframe. If we never stop testing, we will over time get the best possible models. At Mainnet we will be forever testing since even if we finish with all possible combinations, datasets are changing over time and the amount of records and the data itself influence the performance of a ML model. 
+The System allows us to define for each parameter a range of valid values, creating a set of Test Cases based on all the possible combinations of all the values inside the valid  ranges for all parameters. Then we only need distributed processing power to test all the combinations in a reasonable time and find which parameters / data configurations produces the best results. Best results means the best forecasts with the lowest % of error.
 
-It is important to understand that this APP does not prepare the dataset to be tested. This is done by the Test Server App. That means that this app does not need to be ran together with Superalgos or any other data provider for the purpose of extracting data from it. It only depends on the Test Server which handles the management of the Test Cases and the generation of the datasets to be used at each one of the tests.
+Over time, we will learn we will learn which set of parameters and data produces the best model for a certain Asset / Timeframe. If we never stop testing, we will over time get the best possible models. Even if we finish with all possible combinations, datasets are changing over time and the amount of records and the data itself influence the performance of a ML model. For that reason, testing models is a never ending task. 
+
+It is important to understand that this Test Client APP does not prepare the dataset to be tested. This is done by the Test Server App. That means that this app does not need to be ran together with Superalgos or any other data provider for the purpose of extracting data from it. It only depends on the Test Server which handles the management of the Test Cases and the generation of the datasets to be used at each one of the tests.
 
 This App does need Superalgos to save the best predictions as indicators in there.
 
-### Example of Parameters [Fraction of it]
+### Example of Parameters [Fraction of the actual list]
 
 * PARAMETER   VALUE
 * LIST_OF_ASSETS   BTC   ETH
@@ -47,11 +49,11 @@ This App does need Superalgos to save the best predictions as indicators in ther
 * 1503792000000   4400   4285.54   4332.51   4310.01   350.6925850000002
 * 1503878400000   4399.82   4124.54   4310.01   4386.69   603.8416160000002
 
-### How does this App work?
+### How does this Test Client App work?
 
 This app is used to autonomously test different set of parameters to see which Machine Learnning models can produce better forecasts.
 
-This is the Client part of a system that also has a Server part and another app called the Forecast Client. The Test Server app manages a set of different Test Cases that needs to be tried out.
+This is part of a system that also has a Test Server App and another app called the Forecast Client. The Test Server app manages a set of different Test Cases that needs to be crowd-tested.
 
 Each Test Client app, connects to the Test Server app via webRTC. Once connected, it will enter into an infinite loop requesting new Test Cases to the Test Server.
 
@@ -64,7 +66,7 @@ After these files are written, the Test Client App will execute inside the Tenso
 
 This script reads boths files, and creates a ML model using the provided parameters and the data at the time-series file. It's execution could take several minutes. Once finished, a set of results are sent back from the Python script to the Test Client app, which in turn sends via webRTC the results to the Test Server app. 
 
-The Test Server app remembers all the test results and organizes a collection with the best crowd sourced forecasts for each Asset / Timeframe. 
+The Test Server app remembers all the test results and organizes a collection with the best crowd-sourced forecasts for each Asset / Timeframe. 
 
 This consolidated collection with the best crowd-sourced forecasts is sent back to each Test Client as a response to their own report with the results of their latest test.  
 
@@ -72,7 +74,7 @@ The Test Client app once it receives this report, it send it to Superalgos so th
 
 ### How does the overal System Work?
 
-As mentioned before the system consist of 3 parts:
+As mentioned before the system consist of 3 different apps:
 
 1. The Test Server
 2. The Test Client
@@ -80,15 +82,15 @@ As mentioned before the system consist of 3 parts:
 
 #### The Test Server
 
-This app manages all test cases and forecasts, but it does not run the test or do the forecasts. Only one instance of this App is needed. Everytime a test case founds a parameter combination with a lower Error, the test case is transformed into a Forecast Case. 
+This app manages all test and forecasts cases, but it does not run the tests or do the forecasts. Everytime a test case finds a parameter combination with a lower Error for a certain Asset / Timeframe, the test case is transformed into a Forecast Case replacing the previous best performing Forecast case for that same Asset / Timeframe. This app is ran by the Bitcoin Factory. 
 
 #### The Test Client
 
-This app feeds itself from the Test Server with test cases, it runs it at the Tensor Flow Docker Container, reports bact to the Test Server, receives as a prize the latest best-forecasts, and sends them to Superalgos to be saved as an indicator.
+This app feeds itself from the Test Server with test cases. It runs each Test Case at the Tensor Flow Docker Container, reports bact to the Test Server the test results, receives the latest best-forecasts, and sends them to Superalgos to be saved as an indicator.
 
 #### The Forecast Client
 
-This app feeds itself from the Test Server foracast cases. A forecast case is the best known set of parameters for a certain Asseet / Timeframe. The job of this App is to recreate the model discovered by a Tester using the Test App, and once created, start forcasting with it the next candle for that Asset / Timeframe. The forecasts produced by this App are sent to the Test Server and from there distributed to the Test App users every time they test a new case, and finally they end up in their user's Superalgos installation as indicator data. 
+This app feeds itself from the Test Server foracast cases. A forecast case is the best known set of parameters for a certain Asseet / Timeframe. The job of this App is to recreate the model discovered by a Tester using the Test App, and once created, start forcasting with it the next candle for that Asset / Timeframe. The forecasts produced by this App are sent to the Test Server and from there distributed to the Test App users every time they test a new case, and finally they end up in their user's Superalgos data storage as indicator data. 
 
 ### Should I leave this Test Client App Running?
 
