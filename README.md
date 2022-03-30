@@ -2,6 +2,10 @@
 
 ## Introduction
 
+### What is this?
+
+This Test Client App is to be used to crowd-test machine learning models with the goal of finding the best combination of parameters / data that produces the best possible forecasts.
+
 ### Why do we need this?
 
 When working with Machine Learning models, soon you realize that even though they could work to make financial forecasts, you need to set a whole array of parameters that not only define the architecture of the model, but also the shape of the data and may other things. For each of these parameters, there is a valid range of values that could work, but only in combination with other parameters which also have their own valid ranges.
@@ -139,7 +143,20 @@ Since the Test Client and Test Server interact in a p2p way via webRTC, that mea
 
 To run this software you need a Superalgos Profile with the node Forecast Providers / Bitcoin Factory Forecast / Test Client Instance.
 
+### In Detail 
+
+For your Test Client App to work and be able to connect to the Test Server you need to:
+
+1. The Bitcoin Factory Forecast node must be named Mainnet.
+2. You need a Test Client Instance for each process or instance of this Test Client App you want to keep ruuning. Name it as you like.
+3. You will need to assing each Test Client Instance some SA token power if you wish to receive the best crowd-sourced predictions at the end of each of your tests. How much token power for each prediction is to be determined in the near future once the assigned token power will be checked at a future release.
+
+Note 1: Once you add those nodes to your profile you still needs to contribute it and it needs to be merged. After that you will need to wait until the Test Server updates it's Superalgos installation that as of today is a manual task. If you are exited and would like to speed this process up, please contact me on Telegram. (@luis_fernando_molina)
+Note 2: In the future, pending a deeper integration with the Superalgos Governance system, you will be able to receive SA tokens for each Test Case you have processed. We will start counting the solved Test Cases from now.
+
 ## Setup
+
+You need 2 repositories to run this App. One of the App itself and the second one of a WebRTC library used for communication between this Test Client app and the Test Server App.
 
 ### Repositories Cloning 
 
@@ -178,6 +195,27 @@ IMPORTANT NOTES:
 * 1. You need to have a 64 bit version of your OS, otherwise this is not going to work.
 * 2. In linux you might need to add 'sudo' before the docker build command.
 * 3. The dot at the end of the docker build command is mandatory.
+
+### Environmet Settings
+
+There is an Environment.json file with settings you can adjust. As of today these are the only settings you can change.
+
+```sh
+{
+    "SUPERALGOS_HOST": "localhost",
+    "SUPERALGOS_HTTP_PORT": 34248,
+    "SUPERALGOS_USER_PROFILE": "Luis-Fernando-Molina",
+    "TEST_CLIENT_INSTANCE_NAME": "VSCode-Test-Client",
+    "BITCOIN_FACTORY_FORECASTS_NETWORK_NAME": "Testnet"
+}
+```
+
+This app will use this settings to send the best crowd-sourced forecasts to Superalgos so that they are saved there as an Indicator, that you can consume via the Bitcoin-Factory Data Mine.
+
+Note 1: You don't need to run Superalgos at the same machine you are running this Test Client. Superalgos can be running at any place reachable from this App.
+Note 2: You don't need more than one Superalgos installation even if you are running multiple instances of this App at one or more manchines. You can point them all to a single Superalgos installations and all of them will send the best crowd-sourced forecasts to the same Superalgos instance with not issues. 
+Note 3: Change the defaut values with your own Instance names defined at your own Superalgos user profile.
+Note 4: You are expected to use the "Mainnet" network, unless you are involved on the development of this Test Client App.
 
 ## Usage
 
@@ -330,21 +368,6 @@ cd ML-Test-WebRTC
 git pull
 ```
 
-## Environmet Settings
-
-There is an Environment.json file with settings you can adjust. As of today these are the only settings you can change.
-
-```sh
-{
-    "SUPERALGOS_HOST": "localhost",
-    "SUPERALGOS_HTTP_PORT": 34248
-}
-```
-
-This app will use this settings to send the best crowd-sourced forecasts to Superalgos so that they are saved there as an Indicator, that you can consume via the Bitcoin-Factory Data Mine.
-
-Note 1: You don't need to run Superalgos at the same machine you are running this Test Client. Superalgos can be running at any place reachable from this App.
-Node 2: You don't need more than one Superalgos installation even if you are running multiple instances of this App at one or more manchines. You can point them all to a single Superalgos installations and all of them will send the best crowd-sourced forecasts to the same Superalgos instance with not issues. 
 
 ## Troubleshooting - Docker Cheat Sheet
 
