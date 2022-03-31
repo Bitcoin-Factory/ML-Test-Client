@@ -219,10 +219,10 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                 if (code === 0) {
                     onFinished(dataReceived)
                 } else {
-                    console.log('[ERROR] Unexpected error trying to execute a Python script inside the Docker container. ')
-                    console.log('[ERROR] Check at a console if you can run this command: ')
-                    console.log('[ERROR] docker exec -it Bitcoin-Factory-ML python /tf/notebooks/Bitcoin_Factory_LSTM.py')
-                    console.log('[ERROR] Once you can sucessfully run it at the console you might want to try to run this App again. ')
+                    console.log((new Date()).toISOString(), '[ERROR] Unexpected error trying to execute a Python script inside the Docker container. ')
+                    console.log((new Date()).toISOString(), '[ERROR] Check at a console if you can run this command: ')
+                    console.log((new Date()).toISOString(), '[ERROR] docker exec -it Bitcoin-Factory-ML python /tf/notebooks/Bitcoin_Factory_LSTM.py')
+                    console.log((new Date()).toISOString(), '[ERROR] Once you can sucessfully run it at the console you might want to try to run this App again. ')
                     reject('Unexpected Error.')
                 }
             });
