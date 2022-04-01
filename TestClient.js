@@ -1,5 +1,5 @@
 
-exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
+exports.newMachineLearningTestClient = function newMachineLearningTestClient(TEST_CLIENT_INSTANCE_NAME) {
     /*
     This modules bring the data from indicators into a time-series that can be feed to a Machine Learning Model.
     */
@@ -83,7 +83,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient() {
                 method: 'getTestClientInstanceId',
                 networkCodeName: ENVIRONMENT.BITCOIN_FACTORY_FORECASTS_NETWORK_NAME,
                 userProfile: ENVIRONMENT.SUPERALGOS_USER_PROFILE,
-                clientName: ENVIRONMENT.TEST_CLIENT_INSTANCE_NAME
+                clientName: TEST_CLIENT_INSTANCE_NAME
             }
 
             const axios = require("axios")

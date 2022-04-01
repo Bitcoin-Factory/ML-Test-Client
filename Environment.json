@@ -1,7 +1,6 @@
 {
     "SUPERALGOS_HOST": "localhost",
     "SUPERALGOS_HTTP_PORT": 34248,
-    "SUPERALGOS_USER_PROFILE": "Luis-Fernando-Molina",
-    "TEST_CLIENT_INSTANCE_NAME": "VSCode-Test-Client",
-    "BITCOIN_FACTORY_FORECASTS_NETWORK_NAME": "Testnet"
+    "SUPERALGOS_USER_PROFILE": "Your-User-Profile-Name",
+    "BITCOIN_FACTORY_FORECASTS_NETWORK_NAME": "Mainnet"
 }
