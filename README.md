@@ -312,7 +312,7 @@ docker run -it --rm --name Bitcoin-Factory-ML -v C:/Bitcoin-Factory/ML-Test-Clie
 Run the App:
 
 ```sh
-node runTestClient Your-Test-Client-Id
+node runTestClient
 ```
 
 ### on Ubuntu Server
@@ -324,7 +324,7 @@ sudo docker run -it --rm --name Bitcoin-Factory-ML -v ~/Bitcoin-Factory/ML-Test-
 ```
 
 ```sh
-sudo node runTestClient Your-Test-Client-Id
+sudo node runTestClient
 ```
 
 ### on Mac OS
@@ -352,7 +352,7 @@ docker run -it --rm --name Bitcoin-Factory-ML -v /Users/Your-User-Name/Bitcoin-F
 Run the App:
 
 ```sh
-node runTestClient Your-Test-Client-Id
+node runTestClient
 ```
 
 ### On Raspbian
