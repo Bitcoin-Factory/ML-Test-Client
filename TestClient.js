@@ -18,6 +18,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient(TES
 
     async function initialize() {
         let testClientId = await getTestClientId()
+        WEBRTC.runningAtTestServer = false
         WEBRTC.initialize(testClientId)
     }
 
