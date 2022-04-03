@@ -205,6 +205,7 @@ exports.newMachineLearningTestClient = function newMachineLearningTestClient(TES
                 /*
                 Removing Carriedge Return from string.
                 */
+                console.log(data)
                 for (let i = 0; i < 1000; i++) {
                     data = data.replace(/\n/, "")
                 }
